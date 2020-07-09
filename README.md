@@ -10,8 +10,8 @@ Still working on the final feature list. Probably: CPUIP, System-Memory, Logical
 - DirectX 12 Ultimate (Windows Version 2004 - Windows 10 May 2020 Update) or later
 - Windows 10 SDK (10.0.19041.0) or later
 - GPU Driver that support DirectX Ultimate (Only for certain features like checking for Mesh shader support)
--- Nvidia: [https://developer.nvidia.com/directx](https://developer.nvidia.com/directx) (Currently only availible for developers; The Application will still work on Systems with older drivers)
--- AMD: [https://www.amd.com/de/technologies/directx12](https://www.amd.com/de/technologies/directx12)  
+  - Nvidia: [https://developer.nvidia.com/directx](https://developer.nvidia.com/directx) (Currently only availible for developers; The Application will still work on Systems with older drivers)
+  - AMD: [https://www.amd.com/de/technologies/directx12](https://www.amd.com/de/technologies/directx12)  
 
 **Requirements - For target system**
 
