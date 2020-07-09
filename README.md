@@ -2,7 +2,8 @@
 Just a small application witch dumps cpu and gpu capabilities to a text file
 
 **Features**
-Still working on the final feature list. Probably: CPUIP, System-Memory, Logical processor count, Ray-Tracing Tier, Mesh Shader Support, ...
+
+Still working on the final feature list. Probably: CPUID, System-Memory, Logical processor count, Ray-Tracing Tier, Mesh Shader Support, ...
 
 **Requirements - For Developers / Compiling**
 
