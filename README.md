@@ -20,4 +20,5 @@ Still working on the final feature list. Probably: CPUIP, System-Memory, Logical
 - GPU Driver that support DirectX Ultimate (Only for full feature support. The application will still run on older driver versions)
 
 **Build Instructions**
+
 You need [Premake 5](https://premake.github.io/) for creating the project files. The premake5.lua file will be present in the main directory of the project. Please refer to the premake documentation on how to use premake for your system and IDE!
