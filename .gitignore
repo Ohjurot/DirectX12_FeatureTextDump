@@ -1,0 +1,11 @@
+# Binaries and intermediates
+**/bin/
+**/bin-int/
+**.exe
+
+# Visual studio files
+.vs/
+**.sln
+**.vcxproj
+**.vcxproj.filters
+**.vcxproj.user
