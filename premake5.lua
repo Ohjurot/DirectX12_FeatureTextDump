@@ -33,6 +33,12 @@ project "Dx12Features"
 		"src",
 	}
 	
+	links 
+	{
+		"d3d12",
+		"dxgi"
+	}
+	
 	filter "system:windows"
 		systemversion "latest"
 		
