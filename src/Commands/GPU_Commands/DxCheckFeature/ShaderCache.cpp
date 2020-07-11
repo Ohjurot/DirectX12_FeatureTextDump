@@ -13,7 +13,6 @@ std::stringstream DxFeatures::Command::CmdShaderCache::operator()(ID3D12Device* 
 
     // Query D3D12_FEATURE_DATA_SHADER_CACHE 
     D3D12_FEATURE_DATA_SHADER_CACHE scR;
-    HRESULT hr;
     if (FAILED(ptrDevice->CheckFeatureSupport(D3D12_FEATURE_SHADER_CACHE, &scR, sizeof(D3D12_FEATURE_DATA_SHADER_CACHE)))) {
         // Return without warning or error
         return ss;

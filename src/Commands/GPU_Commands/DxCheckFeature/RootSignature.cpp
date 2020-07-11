@@ -13,7 +13,6 @@ std::stringstream DxFeatures::Command::CmdRootSignature::operator()(ID3D12Device
 
     // Query D3D12_FEATURE_DATA_ROOT_SIGNATURE
     D3D12_FEATURE_DATA_ROOT_SIGNATURE rsD;
-    HRESULT hr;
     rsD.HighestVersion = D3D_ROOT_SIGNATURE_VERSION_1_1;
     if (FAILED(ptrDevice->CheckFeatureSupport(D3D12_FEATURE_ROOT_SIGNATURE, &rsD, sizeof(D3D12_FEATURE_DATA_ROOT_SIGNATURE)))) {
         // Return without warning or error

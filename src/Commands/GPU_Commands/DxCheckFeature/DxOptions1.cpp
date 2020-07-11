@@ -13,7 +13,6 @@ std::stringstream DxFeatures::Command::CmdOptions1::operator()(ID3D12Device* ptr
 
     // Query Options1
     D3D12_FEATURE_DATA_D3D12_OPTIONS1 opt1;
-    HRESULT hr;
     ZeroMemory(&opt1, sizeof(D3D12_FEATURE_DATA_D3D12_OPTIONS1));
     if (FAILED(ptrDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS1, &opt1, sizeof(D3D12_FEATURE_DATA_D3D12_OPTIONS1)))) {
         // Return without warning or error

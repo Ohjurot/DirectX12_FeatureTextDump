@@ -13,7 +13,6 @@ std::stringstream DxFeatures::Command::CmdExistingHeaps::operator()(ID3D12Device
 
     // Query D3D12_FEATURE_DATA_SHADER_CACHE 
     D3D12_FEATURE_DATA_EXISTING_HEAPS  ehR;
-    HRESULT hr;
     if (FAILED(ptrDevice->CheckFeatureSupport(D3D12_FEATURE_EXISTING_HEAPS, &ehR, sizeof(D3D12_FEATURE_DATA_EXISTING_HEAPS)))) {
         // Return without warning or error
         return ss;
