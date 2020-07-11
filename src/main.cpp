@@ -4,9 +4,16 @@
 #include <Commands/CPU_Commands/CPUIDQuery.h>
 #include <Commands/CPU_Commands/SystemInfo.h>
 #include <Commands/GPU_Commands/ShowAdapters.h>
+#include <Commands/GPU_Commands/DxCheckFeature/ShaderModel.h>
+#include <Commands/GPU_Commands/DxCheckFeature/FeatureLevels.h>
+#include <Commands/GPU_Commands/DxCheckFeature/RootSignature.h>
+#include <Commands/GPU_Commands/DxCheckFeature/ShaderCache.h>
+#include <Commands/GPU_Commands/DxCheckFeature/ExistingHeaps.h>
+#include <Commands/GPU_Commands/DxCheckFeature/DxOptions1.h>
+#include <Commands/GPU_Commands/DxCheckFeature/DxOptions4.h>
+#include <Commands/GPU_Commands/DxCheckFeature/DxOptions5.h>
+#include <Commands/GPU_Commands/DxCheckFeature/DxOptions6.h>
 
-#include <d3d12.h>
-#include <dxgi.h>
 
 int main(int argc, char** argv) {
 	// Echo out application information
@@ -19,42 +26,23 @@ int main(int argc, char** argv) {
 	std::cout << DxFeatures::Command::CmdSystemInfo::getInstance()(nullptr).str();
 	std::cout << DxFeatures::Command::CmdShowAdapters::getInstance()(nullptr).str();
 
-	// === Just a simple Hello DirectX Test ===
-	// Using NULL for nullptr here!
-	ID3D12Device* ptrDevice = NULL;
+	ID3D12Device* ptrDevice = nullptr;
+	UINT curentIndex = 0;
+	while (static_cast<DxFeatures::Command::CmdShowAdapters*>(&DxFeatures::Command::CmdShowAdapters::getInstance())->createNextDevice(&ptrDevice, &curentIndex)) {
+		std::cout << "[FEATURE|" << curentIndex << "]" << std::endl;
 
-	// Hresult only for debug break (More diagnostics coming soon)
-	HRESULT hr;
+		std::cout << DxFeatures::Command::CmdShaderModel::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdFeatureLevels::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdRootSignature::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdShaderCache::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdExistingHeaps::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdOptions1::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdOptions4::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdOptions5::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdOptions6::getInstance()(ptrDevice).str();
 
-	// Create D3D 12.0 Device on default adapter
-	if (FAILED(hr = D3D12CreateDevice(NULL, D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(&ptrDevice)))) {
-		return -1;
+		std::cout << std::endl;
 	}
-
-	// Test Feature
-	D3D12_FEATURE_DATA_D3D12_OPTIONS5 featureSet;
-	ZeroMemory(&featureSet, sizeof(D3D12_FEATURE_DATA_D3D12_OPTIONS5));
-	if (FAILED(hr = ptrDevice->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, &featureSet, sizeof(D3D12_FEATURE_DATA_D3D12_OPTIONS5)))) {
-		ptrDevice->Release();
-		return -1;
-	}
-
-	// Sample output
-	std::cout << "RayTracing: ";
-	switch (featureSet.RaytracingTier) {
-		case D3D12_RAYTRACING_TIER_NOT_SUPPORTED:
-			std::cout << "Not Supported" << std::endl;
-			break;
-		case D3D12_RAYTRACING_TIER_1_0:
-			std::cout << "Tier 1.0 supported" << std::endl;
-			break;
-		case D3D12_RAYTRACING_TIER_1_1:
-			std::cout << "Tier 1.1 supported" << std::endl;
-			break;
-	}
-
-	// Release Device
-	ptrDevice->Release();
 
 	// Return zero by default
 	return 0;

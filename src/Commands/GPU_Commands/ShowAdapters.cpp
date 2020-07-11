@@ -39,7 +39,7 @@ std::stringstream DxFeatures::Command::CmdShowAdapters::operator()(ID3D12Device*
         std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> wideToNarrowConverter;
 
         // Print info
-        ss << "[GPULIST | " << desc.index << "]" << std::endl;
+        ss << "[GPULIST|" << desc.index << "]" << std::endl;
         ss << "Description: " << wideToNarrowConverter.to_bytes(desc.description.Description) << std::endl;
         ss << "VendorId: " << desc.description.VendorId << std::endl;
         ss << "DeviceId: " << desc.description.DeviceId << std::endl;
@@ -71,6 +71,70 @@ std::stringstream DxFeatures::Command::CmdShowAdapters::operator()(ID3D12Device*
     // Set as called and return stream
     m_bCalled = true;
     return ss;
+}
+
+bool DxFeatures::Command::CmdShowAdapters::createNextDevice(ID3D12Device** ppDevice, UINT* currentIndex){
+    // Return if command not called
+    if (!m_bCalled)
+        return false;
+    
+    // Release old device
+    if (*ppDevice != nullptr) {
+        (*ppDevice)->Release();
+        *ppDevice = nullptr;
+    }
+
+    while (true) {
+        (*currentIndex) = m_indexCurrentAdapter;
+
+        // Return false if current adapter was the last one
+        if (m_indexCurrentAdapter >= m_vecAdapterInfo.size())
+            return false;
+
+        // Continue if current index is Microsoft Basic Render Driver                                                                                      FALSE <- Dont Ignore MS Software renderer
+        if (m_vecAdapterInfo[m_indexCurrentAdapter].description.VendorId == 5140 && m_vecAdapterInfo[m_indexCurrentAdapter].description.DeviceId == 140 && FALSE) {
+            m_indexCurrentAdapter++;
+            (*currentIndex)++;
+            continue;
+        }
+
+        // Load Adapter
+        HRESULT hr = S_OK;
+        IDXGIFactory* ptrFactory = nullptr;
+        IDXGIAdapter* ptrAdapter = nullptr;
+        
+        // Create Factory and return if failed
+        if (FAILED(hr = CreateDXGIFactory(IID_PPV_ARGS(&ptrFactory)))) {
+            return false;
+        }
+
+        // Create Adapter
+        if (FAILED(hr = ptrFactory->EnumAdapters(m_indexCurrentAdapter, &ptrAdapter))) {
+            // Rlease factory and return
+            ptrFactory->Release();
+            return false;
+        }
+        
+        // Create device
+        hr = D3D12CreateDevice(ptrAdapter, D3D_FEATURE_LEVEL_12_0, IID_PPV_ARGS(ppDevice));
+
+        // Rlease D3D Elemnts (NOT DEVICE)
+        ptrAdapter->Release();
+        ptrFactory->Release();
+
+        // Increment and return true
+        m_indexCurrentAdapter++;
+        
+        // Check if last call was not sucessfull
+        if(FAILED(hr))
+            return false;
+
+        // Return true
+        return true;
+    }
+
+    // If while fails without returning return false
+    return false;
 }
 
 DxFeatures::Command::ICommand& DxFeatures::Command::CmdShowAdapters::getInstance(){
