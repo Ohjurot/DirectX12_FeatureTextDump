@@ -1,16 +1,25 @@
 #include <Windows.h>
 #include <iostream>
 
+#include <Commands/CPU_Commands/CPUIDQuery.h>
+#include <Commands/CPU_Commands/SystemInfo.h>
+#include <Commands/GPU_Commands/ShowAdapters.h>
+
 #include <d3d12.h>
 #include <dxgi.h>
 
 int main(int argc, char** argv) {
 	// Echo out application information
-	std::cout << "DirectX 12 Feature to text dump - 2020 Ludwig Fuechsl" << std::endl;
+	std::cout << "DirectX 12 Feature to text dump - 2020 Ludwig Fuechsl" << std::endl << std::endl;
 
 	// TODO: Insert fancy application
 
-	// Just a simple Hello DirectX Test
+	// === Testing own commands ===
+	std::cout << DxFeatures::Command::CmdCPUID::getInstance()(nullptr).str();
+	std::cout << DxFeatures::Command::CmdSystemInfo::getInstance()(nullptr).str();
+	std::cout << DxFeatures::Command::CmdShowAdapters::getInstance()(nullptr).str();
+
+	// === Just a simple Hello DirectX Test ===
 	// Using NULL for nullptr here!
 	ID3D12Device* ptrDevice = NULL;
 
