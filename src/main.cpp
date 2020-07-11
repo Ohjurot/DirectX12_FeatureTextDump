@@ -13,7 +13,7 @@
 #include <Commands/GPU_Commands/DxCheckFeature/DxOptions4.h>
 #include <Commands/GPU_Commands/DxCheckFeature/DxOptions5.h>
 #include <Commands/GPU_Commands/DxCheckFeature/DxOptions6.h>
-
+#include <Commands/GPU_Commands/DxCheckFeature/DxOptions7.h>
 
 int main(int argc, char** argv) {
 	// Echo out application information
@@ -40,8 +40,14 @@ int main(int argc, char** argv) {
 		std::cout << DxFeatures::Command::CmdOptions4::getInstance()(ptrDevice).str();
 		std::cout << DxFeatures::Command::CmdOptions5::getInstance()(ptrDevice).str();
 		std::cout << DxFeatures::Command::CmdOptions6::getInstance()(ptrDevice).str();
+		std::cout << DxFeatures::Command::CmdOptions7::getInstance()(ptrDevice).str();
 
 		std::cout << std::endl;
+	}
+
+	// Release if not already released (Should never happen)
+	if (ptrDevice != nullptr) {
+		ptrDevice->Release();
 	}
 
 	// Return zero by default
